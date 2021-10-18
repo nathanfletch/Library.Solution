@@ -65,25 +65,6 @@ namespace Library.Controllers
     //   }
     //   return RedirectToAction("Index");
     // }
-
-    public ActionResult AddAuthor(int id)
-    {
-      var thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
-      ViewBag.AuthorId = new SelectList(_db.Authors, "AuthorId", "Name");
-      return View(thisBook);
-    }
-
-    [HttpPost]
-    public ActionResult AddAuthor(Book book, int AuthorId)
-    {
-      if (AuthorId != 0)
-      {
-        _db.Authorship.Add(new Authorship() {AuthorId = AuthorId, BookId = book.BookId});
-      }
-      _db.SaveChanges();
-      return RedirectToAction("Index");
-    }
-
     public ActionResult Edit(int id)
     {
       var thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
@@ -92,13 +73,20 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public ActionResult Edit(Book Book, int AuthorId)
+    public ActionResult Edit(Book book, int AuthorId, string AuthorName)
     {
       if (AuthorId != 0)
       {
-        _db.Authorship.Add(new Authorship() {AuthorId = AuthorId, BookId = Book.BookId});
+        _db.Authorship.Add(new Authorship() {AuthorId = AuthorId, BookId = book.BookId});
       }
-      _db.Entry(Book).State = EntityState.Modified;
+       if (AuthorName != null)
+      {
+        Author newAuthor = new Author() { Name = AuthorName };
+        _db.Authors.Add(newAuthor);
+        _db.SaveChanges();
+        _db.Authorship.Add(new Authorship() { AuthorId = newAuthor.AuthorId, BookId = book.BookId});
+      }
+      _db.Entry(book).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

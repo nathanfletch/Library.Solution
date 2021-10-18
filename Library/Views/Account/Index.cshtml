@@ -9,7 +9,6 @@
 @if (User.Identity.IsAuthenticated)
 {
   <p>Hello @User.Identity.Name!</p>
-  <p>@Html.ActionLink("Home", "Index", "Home")</p>
   @using (Html.BeginForm("LogOff", "Account"))
   {
     <input type="submit" value="Log out" />

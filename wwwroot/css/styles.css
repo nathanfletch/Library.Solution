@@ -5,3 +5,28 @@ body {
 .container {
   padding: 3% 0 0 2%;
 }
+
+.noButton {
+  background: transparent;
+  border: 0px transparent;
+  color:#007bff;
+}
+
+.noButton:hover {
+  color:crimson;
+}
+
+.column {
+  float:right;
+  width:10%;
+}
+
+div#header {
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  color:#CCC;
+  background:#333;
+  padding:8px;
+}

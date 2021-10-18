@@ -4,3 +4,23 @@
 
 @model Library.Models.Author
 <h2>Author Details</h2>
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+<h3>Books by this author:</h3>
+@foreach (var join in Model.JoinEntities)
+{
+  <h4>@join.Book.Title</h4>
+  @if(User.Identity.IsAuthenticated)
+  {
+    @using (Html.BeginForm("DeleteBook", "Authors"))
+    {
+      @Html.Hidden("joinId", @join.AuthorshipId)
+      <input class="noButton" type="submit" value="Delete"/>
+    }
+  }
+}
+@if(User.Identity.IsAuthenticated)
+{
+  <p>@Html.ActionLink("Edit this author or add a book", "Edit", new {id = Model.AuthorId})</p>
+  <p>@Html.ActionLink("Delete this author", "Delete", new {id = Model.AuthorId})</p>
+}

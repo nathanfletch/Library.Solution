@@ -8,8 +8,19 @@
 @foreach (var join in Model.JoinEntities)
 {
   <h3>Author: @join.Author.Name</h3>
+  @if(User.Identity.IsAuthenticated)
+  {
+    @using (Html.BeginForm("DeleteAuthor", "Books"))
+    {
+      @Html.Hidden("joinId", @join.AuthorshipId)
+      <input class="noButton" type="submit" value="Delete"/>
+    }
+  }
 }
-@if(Model.JoinEntities.Count == 0)
+
+@if(User.Identity.IsAuthenticated)
 {
-  <p>@Html.ActionLink("Add author", "AddAuthor", "Authors")</p>
+  <p>@Html.ActionLink("Edit book or add an author", "Edit", new { id = Model.BookId })</p>
+  <p>@Html.ActionLink("Delete this book", "Delete", new {id = Model.BookId})</p>
+
 }
