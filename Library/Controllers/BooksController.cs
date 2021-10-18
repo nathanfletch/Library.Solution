@@ -133,8 +133,14 @@ namespace Library.Controllers
       non-logged in user - view books & copies
       library user login - view books & copies, checking out copies
       librarian admin login - create, CRUD
+
+      @Html.DropDownList("ID", (SelectList)ViewBag.MyList, "Please select", new { @class = "form-control" })
       */
-        ViewBag.AuthorId = new SelectList(_db.Authors, "AuthorId", "Name");
+        // List<Author> authorList = _db.Authors.ToList();
+        // authorList.Add(new SelectListItem { Text = "", Value = null});
+
+        SelectList authorList = new SelectList(_db.Authors, "AuthorId", "Name");
+        ViewBag.AuthorId = authorList;
         return View();
     }
 
@@ -149,8 +155,10 @@ namespace Library.Controllers
       }
       if (AuthorName != null)
       {
-        _db.Authors.Add(new Author() { Name = AuthorName });
-        // _db.Authorship.Add( )
+        Author newAuthor = new Author() { Name = AuthorName };
+        _db.Authors.Add(newAuthor);
+        _db.SaveChanges();
+        _db.Authorship.Add(new Authorship() { AuthorId = newAuthor.AuthorId, BookId = book.BookId});
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
