@@ -1,0 +1,39 @@
+@{
+  Layout = "_Layout";
+}
+
+<!-- Is this where we want to use the api? -->
+
+@using Library.Models;
+@using System.Security.Claims
+@model IEnumerable<Library.Models.Book>;
+
+@if (User.Identity.IsAuthenticated)
+{
+  <h1>Welcome @User.Identity.Name</h1>
+}
+else
+{
+  <h1>Catalog contents:</h1> 
+}
+
+@if (Model.Any())
+{
+  <ul>
+    @foreach (Book book in Model)
+    {
+      <li>@Html.ActionLink($"{book.Title}", "Details", new { id = book.BookId })</li>
+    }
+  </ul>
+} 
+else
+{
+  <h3>No books have been added yet!</h3>
+}
+
+@*Wrapped the 'Add New book' ActionLink in an if statement to only show the link if the user is authenticated*@
+@if (User.Identity.IsAuthenticated)
+{
+  <p>@Html.ActionLink("Add new book", "Create")</p>
+}
+<p>@Html.ActionLink("Home", "Index", "Home")</p>

@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Welcome to the Library!</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+  <p>Hello, @User.Identity.Name</p>
+  // List of checked out copies with due dates
+  @using (Html.BeginForm("LogOff", "Account"))
+  {
+    <input type="submit" value="Log Out" />
+  }
+  <p>@Html.ActionLink("View the catalog", "Index", "Books")</p>
+}
+else
+{
+<p>@Html.ActionLink("View the catalog", "Index", "Books")</p>
+<p>@Html.ActionLink("Log In", "Login", "Account")</p>
+<p>@Html.ActionLink("Create an account", "Index", "Account")</p>
+}
