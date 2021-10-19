@@ -13,7 +13,7 @@
 
 @foreach (Copy copy in Model)
 {
-  <li>@Html.ActionLink($"{copy.Book.Title} | {copy.Format} | {copy.CopyId}", "Details", new { id = copy.CopyId })</li>
+  <li>@Html.ActionLink($"{copy.Book.Title} | {copy.Format} | ID: {copy.CopyId}", "Details", new { id = copy.CopyId })</li>
 }
 
 <p>@Html.ActionLink("Add new copy", "Create")</p>

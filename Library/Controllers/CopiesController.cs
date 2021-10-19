@@ -122,6 +122,26 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    public ActionResult Checkout(int copyId)
+    {
+      ViewBag.CopyId = copyId;
+      return View();
+    }
+    [HttpPost]
+    public async Task<ActionResult> Checkout(Copy copy)
+    {
+      //get current DateTime
+      //set time to current DateTime
+      //use time to make sure 2 patrons can't checkout the same book while it's checked out
+      //if (current time < CheckoutTime + 5 minutes) don't check out
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      Patron currentPatron = _db.Patrons.FirstOrDefault(p => p.Name == currentUser.UserName);
+      _db.Checkouts.Add(new Checkout() {PatronId = currentPatron.PatronId, CopyId = copy.CopyId});
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
 

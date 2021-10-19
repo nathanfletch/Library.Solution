@@ -5,8 +5,10 @@
 @using Library.Models;
 @model Library.Models.Copy;
 
-@Html.DisplayNameFor(model => model.Condition): @Html.DisplayFor(model => model.Condition)
+@Html.DisplayNameFor(model => model.Condition): @Html.DisplayFor(model => model.Condition)<br />
 @Html.DisplayNameFor(model => model.Format): @Html.DisplayFor(model => model.Format)
+
+<p>@Html.ActionLink("Checkout this Book", "Checkout", new { copyId = Model.CopyId })</p>
 
 <p>@Html.ActionLink("Edit copy", "Edit", new { id = Model.CopyId })</p>
 <p>@Html.ActionLink("Delete this Copy", "Delete", new {id = Model.CopyId})</p>

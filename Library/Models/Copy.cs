@@ -7,16 +7,16 @@ namespace Library.Models
     {
         public Copy()
         {
-            // this.JoinEntities = new HashSet<Checkouts>();
+            this.Checkouts = new HashSet<Checkout>();
         }
 
         public int CopyId { get; set; }
         public int BookId { get; set; }
-        public string CheckoutDate { get; set; }
-        public string DueDate { get; set; }
+        public DateTime CheckoutDate { get; set; }
+        // public DateTime DueDate { get; set; }
         public string Condition { get; set; }
         public string Format { get; set; }
         public virtual Book Book { get; set;}
-        // public virtual ICollection<Checkouts> JoinEntities { get;}
+        public virtual ICollection<Checkout> Checkouts { get;}
     }
 }
