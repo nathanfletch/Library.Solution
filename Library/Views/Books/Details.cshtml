@@ -1,7 +1,7 @@
 @{
   Layout = "_Layout";
 }
-@*@using Library.Models*@
+@using Library.Models
 @model Library.Models.Book
 
 <h2>@Html.DisplayFor(model => model.Title)</h2>
@@ -17,9 +17,15 @@
     }
   }
 }
-
+<ul>
+  @foreach(Copy copy in Model.Copies)
+  {
+    <li>@Html.ActionLink($"{copy.Format} Id: {copy.CopyId}", "Details", "Copies", new { id = copy.CopyId })</li>
+  }
+</ul>
 @if(User.Identity.IsAuthenticated)
 {
+  <p>@Html.ActionLink("Add a copy", "Create", "Copies", new { BookId = Model.BookId })</p>
   <p>@Html.ActionLink("Edit book or add an author", "Edit", new { id = Model.BookId })</p>
   <p>@Html.ActionLink("Delete this book", "Delete", new {id = Model.BookId})</p>
 

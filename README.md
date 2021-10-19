@@ -31,3 +31,15 @@ Copyright (c) 2021 Nathan Fletcher & Melissa Schatz-Miller
 
 _Nathan Fletcher @ github.com/nathanfletch_  
 _Melissa Schatz-Miller @ github.com/tigertiger_
+
+
+Next up?
+-> Set up copies and checkouts?
+-> Explore roles and specific auth?
+--> Copies/Checkouts: need duedates, need history of checkouts
+-> Were we in the middle of fixing something? 🥴
+
+Later?
+- Explore dynamic models to allow multi-model pages? https://github.com/chynnalew/Factory.Solution/blob/main/Factory/Controllers/HomeController.cs
+- API
+- Change Copy Format to dropdown with specific options?

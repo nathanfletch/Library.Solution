@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models;
+@model Library.Models.Copy
+
+<h2>Add a Copy</h2>
+
+@using(Html.BeginForm())
+{
+  @Html.LabelFor(model => model.BookId)
+  @Html.EditorFor(model => model.BookId, "BookId")
+
+  @Html.LabelFor(model => model.Condition)
+  @Html.TextBoxFor(model => model.Condition)
+
+  @Html.LabelFor(model => model.Format)
+  @Html.TextBoxFor(model => model.Format)
+
+  <input type="submit" value="Add" />
+}
