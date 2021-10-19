@@ -13,11 +13,13 @@ namespace Library.Controllers
     private readonly LibraryContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    // private readonly RoleManager<ApplicationUser> _roleManager;
 
     public AccountController (UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, LibraryContext db)
     {
       _userManager = userManager;
       _signInManager = signInManager;
+      // _roleManager = roleManager;
       _db = db;
     }
 
@@ -34,6 +36,9 @@ namespace Library.Controllers
     [HttpPost]
     public async Task<ActionResult> Register (RegisterViewModel model)
     {
+      //option to choose "librarian" in the view form
+      //if librarian, var user = new Librian();
+      //else 
       var user = new ApplicationUser { UserName = model.Email };
       IdentityResult result = await _userManager.CreateAsync(user, model.Password);
       if (result.Succeeded)
@@ -42,7 +47,6 @@ namespace Library.Controllers
         _db.Patrons.Add( new Patron() { Name = user.UserName} );
         _db.SaveChanges();
         return RedirectToAction("Index");
-
       }
       else
       {

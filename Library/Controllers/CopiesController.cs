@@ -133,24 +133,29 @@ namespace Library.Controllers
     {
       //get current DateTime 
       DateTime currentDateTime = DateTime.Now;
-
+      DateTime newDueDate = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, (currentDateTime.Minute + 5), currentDateTime.Second, currentDateTime.Millisecond);
       
-      // if(DateTime.Compare(currentDateTime))
-      //set time to current DateTime
       Copy thisCopy = _db.Copies.FirstOrDefault(c => c.CopyId == copy.CopyId);
-      thisCopy.CheckoutDate = currentDateTime;
-      thisCopy.DueDate = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, (currentDateTime.Minute + 5), currentDateTime.Second, currentDateTime.Millisecond);
-      thisCopy.IsCheckedOut = true;
-      _db.Entry(thisCopy).State = EntityState.Modified;
-      //display due date somewhere
-      //use time to make sure 2 patrons can't checkout the same book while it's checked out
-      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      var currentUser = await _userManager.FindByIdAsync(userId);
-      Patron currentPatron = _db.Patrons.FirstOrDefault(p => p.Name == currentUser.UserName);
-      _db.Checkouts.Add(new Checkout() {PatronId = currentPatron.PatronId, CopyId = copy.CopyId});
-      _db.SaveChanges();
+      if(!thisCopy.IsCheckedOut)
+      {
+        thisCopy.CheckoutDate = currentDateTime;
+        thisCopy.DueDate = newDueDate;
+        thisCopy.IsCheckedOut = true;
+        _db.Entry(thisCopy).State = EntityState.Modified;
+        var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var currentUser = await _userManager.FindByIdAsync(userId);
+        Patron currentPatron = _db.Patrons.FirstOrDefault(p => p.Name == currentUser.UserName);
+        _db.Checkouts.Add(new Checkout() {PatronId = currentPatron.PatronId, CopyId = copy.CopyId});
+        _db.SaveChanges();
+        ViewBag.Message = $"You have successfully checked out your book. Your new due date is {thisCopy.DueDate.ToString()}.";
+      }
+      else
+      {
+        ViewBag.Message = "Sorry, it's already checked out. Try a different copy.";
+      }
+      
 
-      return RedirectToAction("Index");
+      return View();
     }
   }
 }
