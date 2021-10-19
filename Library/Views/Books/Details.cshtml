@@ -20,7 +20,7 @@
 <ul>
   @foreach(Copy copy in Model.Copies)
   {
-    <li>@Html.ActionLink($"{copy.Format} Id: {copy.CopyId}", "Details", "Copies", new { id = copy.CopyId })</li>
+    <li>@Html.ActionLink($"{copy.Format} Id: {copy.CopyId} | Checked Out: {copy.CheckoutDate}", "Details", "Copies", new { id = copy.CopyId })</li>
   }
 </ul>
 @if(User.Identity.IsAuthenticated)

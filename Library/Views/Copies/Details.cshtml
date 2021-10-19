@@ -7,6 +7,8 @@
 
 @Html.DisplayNameFor(model => model.Condition): @Html.DisplayFor(model => model.Condition)<br />
 @Html.DisplayNameFor(model => model.Format): @Html.DisplayFor(model => model.Format)
+@Html.DisplayNameFor(model => model.DueDate): @Html.DisplayFor(model => model.DueDate)
+This book is checked out: @Html.DisplayFor(model => model.IsCheckedOut)
 
 <p>@Html.ActionLink("Checkout this Book", "Checkout", new { copyId = Model.CopyId })</p>
 

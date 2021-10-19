@@ -166,8 +166,14 @@ namespace Library.Migrations
                     b.Property<string>("Condition")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Format")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsCheckedOut")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("CopyId");
 

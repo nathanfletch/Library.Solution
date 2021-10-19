@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20211019185059_CheckoutsNoDueDate")]
-    partial class CheckoutsNoDueDate
+    [Migration("20211019213433_DateTime2")]
+    partial class DateTime2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,8 +168,14 @@ namespace Library.Migrations
                     b.Property<string>("Condition")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Format")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsCheckedOut")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("CopyId");
 
