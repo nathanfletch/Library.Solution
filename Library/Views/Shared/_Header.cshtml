@@ -2,6 +2,23 @@
   <div class="column">
     <a href="/">Home</a>
   </div>
+
+  @if (User.Identity.IsAuthenticated)
+  {
+    <div class="column">
+    @using (Html.BeginForm("LogOff", "Account"))
+    {
+      <input class="noButtonLogOut" type="submit" value="Log Out" />
+    }
+    </div>
+  }
+  else
+  {
+    <div class="column">
+      <a href="/Account/Login">Log In</a>
+    </div>
+  }
+
   <div class="column">
     <a href="/Books">View Books</a>
   </div>

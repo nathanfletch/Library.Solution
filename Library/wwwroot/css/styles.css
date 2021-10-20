@@ -16,6 +16,17 @@ body {
   color:crimson;
 }
 
+.noButtonLogOut {
+  background: transparent;
+  border: 0px transparent;
+  color:#fff;
+}
+
+.noButtonLogOut:hover {
+  color:#CCC;
+  text-decoration:none;
+}
+
 .column {
   float:right;
   width:10%;
@@ -33,4 +44,9 @@ div#header {
 
 #header a {
   color: #fff;
+}
+
+#header a:hover {
+  color:#CCC;
+  text-decoration:none;
 }

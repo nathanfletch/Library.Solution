@@ -39,14 +39,11 @@ namespace Library.Controllers
       // var userCopies = _db.Copies.Where(entry => entry.User.Id == currentUser.Id).ToList();
 
     }
-    
+    [Authorize (Roles="Librarian")] //, HandleError
     public ActionResult Details(int id)
     {
       Copy thisCopy = _db.Copies.FirstOrDefault(copy => copy.CopyId == id);
-      // var thisCopy = _db.Copies
-      //   .Include(copy => copy.JoinEntities)
-      //   .ThenInclude(join => join.Book)
-      //   .FirstOrDefault(copy => copy.CopyId == id);
+      
       return View(thisCopy);
     }
 
@@ -68,13 +65,14 @@ namespace Library.Controllers
     //   }
     //   return RedirectToAction("Index");
     // }
+    [Authorize (Roles="Librarian")]
     public ActionResult Edit(int id)
     {
       var thisCopy = _db.Copies.FirstOrDefault(copy => copy.CopyId == id);
       
       return View(thisCopy);
     }
-
+    [Authorize (Roles="Librarian")]
     [HttpPost]
     public ActionResult Edit(Copy copy)
     {
@@ -82,13 +80,13 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
+    [Authorize (Roles="Librarian")]
     public ActionResult Delete(int id)
     {
       var thisCopy = _db.Copies.FirstOrDefault(Copy => Copy.CopyId == id);
       return View(thisCopy);
     }
-
+    [Authorize (Roles="Librarian")]
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed (int id)
     {
@@ -107,6 +105,7 @@ namespace Library.Controllers
     //   return RedirectToAction("Index");
     // }
 
+    [Authorize (Roles="Librarian")]
     public ActionResult Create(int BookId)
     {
       Console.WriteLine($"BookId: {BookId}");
@@ -115,6 +114,7 @@ namespace Library.Controllers
       return View();
     }
 
+    [Authorize (Roles="Librarian")]
     [HttpPost]
     public ActionResult Create(Copy copy)
     {
@@ -123,15 +123,16 @@ namespace Library.Controllers
       return RedirectToAction("Index");
     }
 
+    [Authorize]
     public ActionResult Checkout(int copyId)
     {
       ViewBag.CopyId = copyId;
       return View();
     }
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> Checkout(Copy copy)
     {
-      //get current DateTime 
       DateTime currentDateTime = DateTime.Now;
       DateTime newDueDate = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day, currentDateTime.Hour, (currentDateTime.Minute + 5), currentDateTime.Second, currentDateTime.Millisecond);
       
@@ -153,15 +154,7 @@ namespace Library.Controllers
       {
         ViewBag.Message = "Sorry, it's already checked out. Try a different copy.";
       }
-      
-
       return View();
     }
   }
 }
-
-/*
- var userId = this.User.FindFirst(ClaimTypes.TitleIdentifier)?.Value;
-         var currentUser = await _userManager.FindByIdAsync(userId);
-         item.User = currentUser;
-         */

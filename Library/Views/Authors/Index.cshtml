@@ -5,17 +5,12 @@
 <!-- Is this where we want to use the api? -->
 
 @using Library.Models;
-@using System.Security.Claims
+@using System.Security.Claims;
 @model IEnumerable<Library.Models.Author>;
 
-@if (User.Identity.IsAuthenticated)
-{
-  <h1>Welcome @User.Identity.Name</h1>
-}
-else
-{
-  <h1>All authors who have books in the catalog:</h1> 
-}
+
+<h1>Authors:</h1> 
+
 
 @if (Model.Any())
 {
@@ -30,10 +25,7 @@ else
 {
   <h3>No authors have been added yet!</h3>
 }
-
-@*Wrapped the 'Add New author' ActionLink in an if statement to only show the link if the user is authenticated*@
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && User.IsInRole("Librarian"))
 {
   <p>@Html.ActionLink("Add new author", "Create")</p>
 }
-<p>@Html.ActionLink("Home", "Index", "Home")</p>

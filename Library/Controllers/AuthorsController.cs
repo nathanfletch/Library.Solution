@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace Library.Controllers
 {
-  [Authorize]
+  [Authorize (Roles="Librarian")]
   public class AuthorsController : Controller
   {
     private readonly LibraryContext _db;
@@ -25,12 +25,14 @@ namespace Library.Controllers
       _db = db;
     }
 
+    [AllowAnonymous]
     public ActionResult Index()
     {
       IEnumerable<Author> sorted = _db.Authors.OrderBy(author => author.Name);
       return View(sorted);
     }
 
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
       var thisAuthor = _db.Authors
@@ -40,24 +42,6 @@ namespace Library.Controllers
       return View(thisAuthor);
     }
 
-    // public ActionResult Complete(int id)
-    // {
-    //   var thisAuthor = _db.Authors.FirstOrDefault(Author => Author.AuthorId == id);
-    //   return View(thisAuthor);
-    // }
-
-    // [HttpPost, ActionName("Complete")]
-    // public ActionResult CompleteConfirm(int id, Author Author, bool Complete)
-    // {
-    //   if (Complete != true)
-    //   {
-    //     var thisAuthor = _db.Authors.FirstOrDefault(Author => Author.AuthorId == id);
-    //     thisAuthor.Complete = true;
-    //     _db.Entry(thisAuthor).State = EntityState.Modified;
-    //     _db.SaveChanges();
-    //   }
-    //   return RedirectToAction("Index");
-    // }
     public ActionResult Edit(int id)
     {
       var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
