@@ -19,5 +19,8 @@
   @Html.LabelFor(user=> user.ConfirmPassword)
   @Html.PasswordFor(user=> user.ConfirmPassword)
 
+  @Html.Label("Are you a librarian or a patron?")
+  @Html.DropDownList("Id")
+
   <input type="submit" value="Register" />
 }

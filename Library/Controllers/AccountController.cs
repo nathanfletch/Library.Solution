@@ -1,48 +1,79 @@
 using Microsoft.AspNetCore.Mvc;
 using Library.Models;
-using System.Threading.Tasks;
 using Library.ViewModels;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace Library.Controllers
 {
   public class AccountController : Controller
   {
     private readonly LibraryContext _db;
+    private RoleManager<IdentityRole> _roleManager;
+
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    // private readonly RoleManager<ApplicationUser> _roleManager;
 
-    public AccountController (UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, LibraryContext db)
+    public AccountController (RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, LibraryContext db)
     {
       _userManager = userManager;
       _signInManager = signInManager;
-      // _roleManager = roleManager;
+      _roleManager = roleManager;
       _db = db;
     }
 
-    public ActionResult Index()
+    public async Task<IActionResult> Index()
     {
+      if(_roleManager.Roles.ToList().Count == 0)
+      {
+        IdentityResult librarianResult = await _roleManager.CreateAsync(new IdentityRole("Librarian"));
+        IdentityResult visitorResult = await _roleManager.CreateAsync(new IdentityRole("Visitor"));
+      }
       return View();
     }
-
     public IActionResult Register()
     {
+      List<IdentityRole> roles = _roleManager.Roles.ToList();
+      // ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+      ViewBag.Id = new SelectList(_roleManager.Roles, "Id", "Name");
+      //selectlist with roles
       return View();
     }
-
     [HttpPost]
-    public async Task<ActionResult> Register (RegisterViewModel model)
+    public async Task<ActionResult> Register (RegisterViewModel model, string Id)
     {
       //option to choose "librarian" in the view form
       //if librarian, var user = new Librian();
       //else 
       var user = new ApplicationUser { UserName = model.Email };
-      IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-      if (result.Succeeded)
+      IdentityResult userCreateResult = await _userManager.CreateAsync(user, model.Password);
+      if (userCreateResult.Succeeded)
       {
+        //find the role
+        /*
+          var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          var currentUser = await _userManager.FindByIdAsync(userId);
+          item.User = currentUser;
+         */
+        var selectedRole = await _roleManager.FindByIdAsync(Id);
+        IdentityResult roleAddResult = await _userManager.AddToRoleAsync(user, selectedRole.Name);
+        if(roleAddResult.Succeeded)
+        {
+          Console.WriteLine($"Added role! :D");
+        }
+        else
+        {
+          Console.WriteLine($"Failed to add role!");
+        }
         //create new
         _db.Patrons.Add( new Patron() { Name = user.UserName} );
         _db.SaveChanges();

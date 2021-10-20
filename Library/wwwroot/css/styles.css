@@ -30,3 +30,7 @@ div#header {
   background:#333;
   padding:8px;
 }
+
+#header a {
+  color: #fff;
+}

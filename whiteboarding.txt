@@ -1,0 +1,42 @@
+// m by n integer matrix
+// if an element is 0, set the whole row and column to 0
+// return the matrix
+
+
+Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+
+founction setMatrixZeroes(matrix) {
+
+  let iArray = [];
+  let jArray = [];
+
+  for (let i = 0; i< matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if(matrix[i][j] === 0){
+        
+        //save the i,j values where we found 0's, then iterate with a new double for and change where i and j are equal to the found ijs
+        iArray.push(i);
+        jArray.push(j);
+      }
+    }
+  }
+
+  for (let i = 0; i< matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      //test if it's in the arrays, set to 0
+      if(iArray.contains(i) || jArray.contains(j))
+      {
+        matrix[i][j] = 0;
+      }
+    }
+  }
+
+  return matrix;
+  
+}
+
+iArray: [1]
+jArray: [1]
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[1,0,1],[0,0,0],[1,0,1]]
