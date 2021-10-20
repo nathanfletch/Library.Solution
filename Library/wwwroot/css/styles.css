@@ -6,9 +6,8 @@ body {
 
 .container {
   padding: 3% 0 0 2%;
-  position:fixed;
+  position:absolute;
   top:300px;
-  bottom:4%;
 }
 
 .noButton {
