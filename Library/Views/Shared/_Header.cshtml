@@ -1,29 +1,4 @@
 <div id="header">
-  <div class="column">
-    <a href="/">Home</a>
-  </div>
-
-  @if (User.Identity.IsAuthenticated)
-  {
-    <div class="column">
-    @using (Html.BeginForm("LogOff", "Account"))
-    {
-      <input class="noButtonLogOut" type="submit" value="Log Out" />
-    }
-    </div>
-  }
-  else
-  {
-    <div class="column">
-      <a href="/Account/Login">Log In</a>
-    </div>
-  }
-
-  <div class="column">
-    <a href="/Books">View Books</a>
-  </div>
-  <div class="column">
-    <a href="/Authors">View Authors</a>
-  </div>
-  
+  <h1>Dusty Old Library</h1>
+  <h4>Dusty, Oregon | Historic Downtown</h4>
 </div>
