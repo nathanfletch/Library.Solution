@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Library.Controllers
 {
@@ -29,11 +31,28 @@ namespace Library.Controllers
     public ActionResult Index()
     {
       //put in separate route, save to database, return this route to just showing what's in the database
-      var allBooks = Book.GetBooks(EnvironmentVariables.ApiKey);
-      return View(allBooks);
+      var jsonResponse = Book.GetBooks(EnvironmentVariables.ApiKey);
+      //converting c# json to actual book objects
+      List<Book> bookList = JsonConvert.DeserializeObject<List<Book>>(jsonResponse["results"]["books"].ToString());
+      List<Author> authorList = JsonConvert.DeserializeObject<List<Author>>(jsonResponse["results"]["books"].ToString());
+      for(int i = 0; i < authorList.Count; i++)
+      { 
+        _db.Books.Add(bookList[i]);
+        _db.Authors.Add(authorList[i]);
+      }
+      _db.SaveChanges();
+      for(int i = 0; i < authorList.Count; i++)
+      { 
+        Book bookAtCurrentIndex = _db.Books.FirstOrDefault(book => book.Title == bookList[i].Title);
+        Author authorAtCurrentIndex = _db.Authors.FirstOrDefault(author => author.Name == authorList[i].Name);
+        // get ids, make a new authorship object
+        _db.Authorship.Add( new Authorship() { BookId = bookAtCurrentIndex.BookId, AuthorId = authorAtCurrentIndex.AuthorId });
+      }
+      _db.SaveChanges();
+      //we also want to make author objects and authorship objects and store them in the _db
+      List<Book> sorted = _db.Books.ToList().OrderBy(book => book.Title).ToList();
+      return View(sorted);
 
-      // List<Book> sorted = _db.Books.ToList().OrderBy(book => book.Title).ToList();
-      // return View(sorted);
     }
 
     [AllowAnonymous]
