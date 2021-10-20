@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiko:wght@400;600;700&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
 body {
-  font-family: "Times New Roman", Times, serif;
+  font-family: 'Amiko', sans-serif;;
 }
 
 .container {
   padding: 3% 0 0 2%;
+  position:fixed;
+  top:300px;
+  bottom:4%;
 }
 
 .noButton {
@@ -20,6 +25,10 @@ body {
   background: transparent;
   border: 0px transparent;
   color:#fff;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight:100;
+  text-transform: lowercase;
+  letter-spacing:.2rem;
 }
 
 .noButtonLogOut:hover {
@@ -32,14 +41,24 @@ body {
   width:10%;
 }
 
-div#header {
+.column a {
+  color:#fff;
+}
+
+#header {
+  background-image: url("/../../img/glen-noble-o4-YyGi5JBc-unsplash.jpeg");
+  background-color: rgba(138, 155, 167, 0.925);
+  background-blend-mode:multiply;
+  background-size: cover;
+  background-position: 0 35%;
+  min-height:250px;
+  width:100%;
   position:fixed;
   top:0px;
-  left:0px;
-  width:100%;
-  color:#CCC;
-  background:#333;
-  padding:8px;
+  padding:3%;
+  text-align:left;
+  color:#fff;
+  font-family: 'Lora', serif;
 }
 
 #header a {
@@ -49,4 +68,18 @@ div#header {
 #header a:hover {
   color:#CCC;
   text-decoration:none;
+}
+
+div#navBar {
+  position:fixed;
+  left:0px;
+  top:250px;
+  width:100%;
+  color:#CCC;
+  background:#121115;
+  padding:8px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight:100;
+  text-transform: lowercase;
+  letter-spacing:.2rem;
 }
