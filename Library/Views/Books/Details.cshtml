@@ -8,12 +8,12 @@
 @foreach (var join in Model.JoinEntities)
 {
   <h3>Author: @join.Author.Name</h3>
-  @if(User.Identity.IsAuthenticated)
+  @if (User.Identity.IsAuthenticated && User.IsInRole("Librarian"))
   {
     @using (Html.BeginForm("DeleteAuthor", "Books"))
     {
       @Html.Hidden("joinId", @join.AuthorshipId)
-      <input class="noButton" type="submit" value="Delete"/>
+      <input class="noButton" type="submit" value="Remove Author from Book"/>
     }
   }
 }
@@ -23,7 +23,7 @@
     <li>@Html.ActionLink($"{copy.Format} Id: {copy.CopyId} | Checked Out: {copy.CheckoutDate}", "Details", "Copies", new { id = copy.CopyId })</li>
   }
 </ul>
-@if(User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && User.IsInRole("Librarian"))
 {
   <p>@Html.ActionLink("Add a copy", "Create", "Copies", new { BookId = Model.BookId })</p>
   <p>@Html.ActionLink("Edit book or add an author", "Edit", new { id = Model.BookId })</p>
