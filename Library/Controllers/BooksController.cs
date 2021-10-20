@@ -37,22 +37,34 @@ namespace Library.Controllers
       List<Author> authorList = JsonConvert.DeserializeObject<List<Author>>(jsonResponse["results"]["books"].ToString());
       for(int i = 0; i < authorList.Count; i++)
       { 
-        _db.Books.Add(bookList[i]);
-        _db.Authors.Add(authorList[i]);
+        //check if it's in the database
+        if(!_db.Books.Any(book => book.Title == bookList[i].Title)) 
+        {
+          _db.Books.Add(bookList[i]);
+        }
+        else
+        {
+          bookList[i] = _db.Books.FirstOrDefault(book => book.Title == bookList[i].Title);
+        }
+        if(!_db.Authors.Any(author => author.Name == authorList[i].Name))
+        {
+          _db.Authors.Add(authorList[i]);
+        }
+        else
+        {
+          authorList[i] = _db.Authors.FirstOrDefault(author => author.Name == authorList[i].Name);
+        }
+        _db.SaveChanges();
+
+        if(!_db.Authorship.Any(authorship => authorship.BookId == bookList[i].BookId && authorship.AuthorId == authorList[i].AuthorId))
+        {
+          _db.Authorship.Add( new Authorship() { BookId = bookList[i].BookId, AuthorId = authorList[i].AuthorId });
+          _db.SaveChanges();
+        }
+          // Console.WriteLine($"BookId: {bookList[i].BookId}");
       }
-      _db.SaveChanges();
-      for(int i = 0; i < authorList.Count; i++)
-      { 
-        Book bookAtCurrentIndex = _db.Books.FirstOrDefault(book => book.Title == bookList[i].Title);
-        Author authorAtCurrentIndex = _db.Authors.FirstOrDefault(author => author.Name == authorList[i].Name);
-        // get ids, make a new authorship object
-        _db.Authorship.Add( new Authorship() { BookId = bookAtCurrentIndex.BookId, AuthorId = authorAtCurrentIndex.AuthorId });
-      }
-      _db.SaveChanges();
-      //we also want to make author objects and authorship objects and store them in the _db
       List<Book> sorted = _db.Books.ToList().OrderBy(book => book.Title).ToList();
       return View(sorted);
-
     }
 
     [AllowAnonymous]
