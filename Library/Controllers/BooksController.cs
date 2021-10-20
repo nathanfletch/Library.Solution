@@ -28,8 +28,12 @@ namespace Library.Controllers
     [AllowAnonymous]
     public ActionResult Index()
     {
-      List<Book> sorted = _db.Books.ToList().OrderBy(book => book.Title).ToList();
-      return View(sorted);
+      //put in separate route, save to database, return this route to just showing what's in the database
+      var allBooks = Book.GetBooks(EnvironmentVariables.ApiKey);
+      return View(allBooks);
+
+      // List<Book> sorted = _db.Books.ToList().OrderBy(book => book.Title).ToList();
+      // return View(sorted);
     }
 
     [AllowAnonymous]
