@@ -19,7 +19,7 @@
 * Identity
 * Entity Framework Core
 
-<p align="center" style="padding-top:30px; padding-bottom:30px;"><img src="Library/wwwroot/img/design.png" width="350px"></p>  
+<p align="center" style="padding-top:30px; padding-bottom:30px;"><img src="Library/wwwroot/img/design.png"></p>  
 
 ## Instructions
 
